@@ -15,6 +15,5 @@ class AnimeViewModel @Inject constructor(
     init {
         fetchAnime()
     }
-
     fun fetchAnime() = repositories.fetchAnime().cachedIn(viewModelScope)
 }

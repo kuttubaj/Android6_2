@@ -2,23 +2,24 @@ package com.example.kotlin62.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingData
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.kotlin62.ui.model.AnimeData
 import com.example.kotlin62.databinding.ItemAnimeBinding
+import com.example.kotlin62.ui.model.Data
 
-class AnimeAdapter : PagingDataAdapter<AnimeData, AnimeAdapter.ViewHolder>(diffUtil) {
+class AnimeAdapter : PagingDataAdapter<Data, AnimeAdapter.ViewHolder>(diffUtil) {
 
     inner class ViewHolder(private val binding: ItemAnimeBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(animeData: AnimeData) = with(binding) {
+        fun onBind(animeData: Data) = with(binding) {
             Glide.with(ivItemAnime.context)
-                .load("https://media.kitsu.io/anime/poster_images/1/${animeData.id}original.jpg")
+                .load("https://media.kitsu.io/anime/poster_images/${animeData.id}/original.jpg")
                 .into(ivItemAnime)
-            tvItemAnime.text = animeData.links.replaceFirstChar { it.uppercase() }
+            tvItemAnime.text = animeData.attributes.titles?.en ?: ""
         }
     }
 
@@ -39,16 +40,15 @@ class AnimeAdapter : PagingDataAdapter<AnimeData, AnimeAdapter.ViewHolder>(diffU
     }
 
     fun submitData(pagingData: PagingData<Data>?) {
-
     }
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<AnimeData>() {
-            override fun areItemsTheSame(oldItem: AnimeData, newItem: AnimeData): Boolean {
+        val diffUtil = object : DiffUtil.ItemCallback<Data>() {
+            override fun areItemsTheSame(oldItem: Data, newItem: Data): Boolean {
                 return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: AnimeData, newItem: AnimeData): Boolean {
+            override fun areContentsTheSame(oldItem: Data, newItem: Data): Boolean {
                 return oldItem == newItem
             }
         }
